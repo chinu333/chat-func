@@ -31,7 +31,7 @@ hostBuilder.ConfigureServices(services =>
 
         AzureCognitiveSearchMemory csmemory = new AzureCognitiveSearchMemory(
             "", //configuration["URL"]
-            "QtfU62WeY5rx27SIY46adertuAqxiTgkAy0VzqzqC5AzSeDd4Yfb" //configuration["KEY"];
+            "" //configuration["KEY"];
         );
 
 
