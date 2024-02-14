@@ -21,7 +21,21 @@ hostBuilder.ConfigureServices(services =>
     {
         // Retrieve the OpenAI API key from the configuration.
         IConfiguration configuration = sp.GetRequiredService<IConfiguration>();
-        string openAiApiKey = ""; //configuration["OPENAI_APIKEY"];
+        // string openAiApiKey = ""; //configuration["OPENAI_APIKEY"];
+
+        string memoryCollectionName = configuration["memoryCollectionName"] ?? "";
+        string csURL = configuration["csURL"] ?? "";
+        string csKey = configuration["csKey"] ?? "";
+        string openAIURL = configuration["openAIURL"] ?? "";
+        string openAIDeploymentName = configuration["openAIDeploymentName"] ?? "";
+        string openAIKey = configuration["openAIKey"] ?? "";
+
+        // Console.WriteLine("Memory Collection Name : " + memoryCollectionName);
+        // Console.WriteLine("Cognitive Search URL : " + csURL);
+        // Console.WriteLine("Cognitive Search KEY: " + csKey);
+        // Console.WriteLine("OPEN API URL: " + openAIURL);
+        // Console.WriteLine("OPEN API Deployment Name: " + openAIDeploymentName);
+        // Console.WriteLine("OPEN API KEY: " + openAIKey);
 
         QdrantMemoryStore memoryStore = new QdrantMemoryStore(
             host: "http://localhost",
@@ -29,18 +43,14 @@ hostBuilder.ConfigureServices(services =>
             vectorSize: 1536,
             logger: sp.GetRequiredService<ILogger<QdrantMemoryStore>>());
 
-        AzureCognitiveSearchMemory csmemory = new AzureCognitiveSearchMemory(
-            "", //configuration["URL"]
-            "" //configuration["KEY"];
-        );
-
+        AzureCognitiveSearchMemory csmemory = new AzureCognitiveSearchMemory(csURL, csKey);
 
         IKernel kernel = new KernelBuilder()
             .WithLogger(sp.GetRequiredService<ILogger<IKernel>>())
             .Configure(config => config.AddAzureChatCompletionService(
-                deploymentName: "",
-                endpoint: "",
-                apiKey: openAiApiKey))
+                deploymentName: openAIDeploymentName,
+                endpoint: openAIURL,
+                apiKey: openAIKey))
             // .Configure(c => c.AddAzureTextEmbeddingGenerationService(
             //     deploymentName: "text-embedding-ada-002",
             //     endpoint: "https://openaimtcdemoinstance.openai.azure.com/",
