@@ -52,7 +52,9 @@ namespace My.MyChatFunction
             
             // Search for memories that are similar to the user's input.
             // const string memoryCollectionName = "ms10k";
-            const string memoryCollectionName = "alsc";
+            // const string memoryCollectionName = "alsc";
+            string memoryCollectionName = System.Environment.GetEnvironmentVariable("memoryCollectionName") ?? "";
+            Console.WriteLine("Memory Collection Name : " + memoryCollectionName);
             // const string memoryCollectionName = "mohawkemails";
             // const string memoryCollectionName = "novant";
             IAsyncEnumerable<MemoryQueryResult> queryResults = 
